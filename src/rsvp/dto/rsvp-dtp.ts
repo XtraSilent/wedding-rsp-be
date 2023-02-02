@@ -3,25 +3,21 @@ import { MaxLength, IsNotEmpty, IsNumber, IsString, IsBoolean } from 'class-vali
 export class RsvpDto {
     
     @IsString()
-    readonly id: string;
+    id: string;
 
     @IsString()
-    @MaxLength(100)
-    readonly name: string;
+    name: string;
 
     @IsString()
-    @MaxLength(13)
-    readonly phone: string;
-
-    @IsBoolean()
-    readonly attend: boolean;
+    phone: string;
 
     @IsString()
-    @MaxLength(1)
-    readonly from: string;
+    attend: string;
+
+    @IsString()
+    from: string;
 
     @IsNotEmpty()
     @IsNumber()
-    @MaxLength(60)
-    readonly total: number;
+    total: number;
 }

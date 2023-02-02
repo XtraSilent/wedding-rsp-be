@@ -5,6 +5,8 @@ import { UpdateRsvpDto } from './dto/update-rsvp.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { RsvpDto } from './dto/rsvp-dtp';
+import { AttendanceRsvpDto } from './dto/get-attendance.dto';
+import { v4 as uuidv4 } from 'uuid';
 
 @ApiTags('Rsvp')
 // @UseGuards(AuthGuard('jwt'))
@@ -13,13 +15,20 @@ export class RsvpController {
   constructor(private readonly rsvpService: RsvpService) {}
 
   @Post()
-  create(@Body() RsvpDto: RsvpDto) {
-    return this.rsvpService.create(RsvpDto);
+  create(@Body() rsvpDto: RsvpDto) {
+    let id = uuidv4();
+    rsvpDto.id = id
+    return this.rsvpService.create(rsvpDto);
   }
 
   @Get()
   findAll() {
     return this.rsvpService.findAll();
+  }
+
+  @Post('/getAttendance')
+  getAttend(@Body() attendanceRsvpDto: AttendanceRsvpDto) {
+    return this.rsvpService.getAttendance(attendanceRsvpDto);
   }
 
   @Get(':id')

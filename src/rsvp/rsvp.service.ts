@@ -7,6 +7,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RsvpDto } from './dto/rsvp-dtp';
+import { AttendanceRsvpDto } from './dto/get-attendance.dto';
 import { UpdateRsvpDto } from './dto/update-rsvp.dto';
 import { Rsvps } from './entities/rsvps.entity';
 import { IRsvp } from './interfaces/rsvps.interface';
@@ -22,7 +23,7 @@ export class RsvpService {
       try {
         let data = await this.rsvpRepository.save(rsvpDto);
       } catch (error) {
-          throw new HttpException(error, HttpStatus.BAD_REQUEST);
+          throw new HttpException("Error!", HttpStatus.BAD_REQUEST);
       }
   }
 
@@ -50,5 +51,13 @@ export class RsvpService {
 
   public async remove(id: string) {
     return `This action removes a #${id} rsvp`;
+  }
+
+  public async getAttendance(attendanceRsvpDto: AttendanceRsvpDto) {
+    return await this.rsvpRepository.count({
+      where: {
+        attend: attendanceRsvpDto.attend
+      }
+    });
   }
 }

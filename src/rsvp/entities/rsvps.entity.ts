@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn,UpdateDateColumn, DeleteDateColumn } from 'typeorm';
 
 @Entity()
 export class Rsvps {
@@ -10,7 +10,7 @@ export class Rsvps {
     name: string;
 
     @Column()
-    attend: boolean;
+    attend: string;
 
     @Column({
         unique: true,
@@ -22,4 +22,13 @@ export class Rsvps {
 
     @Column()
     total: number;
+
+    @CreateDateColumn()
+    created_at: Date; // Creation date
+
+    @UpdateDateColumn()
+    updated_at: Date; // Last updated date
+
+    @DeleteDateColumn()
+    deleted_at: Date; // Deletion date
 }
