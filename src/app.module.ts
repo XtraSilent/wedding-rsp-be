@@ -43,7 +43,7 @@ import * as Yup from 'yup';
         host: config.get<string>('TYPEORM_HOST'),
         port: config.get<number>('TYPEORM_PORT'),
         username: config.get<string>('TYPEORM_USERNAME'),
-        password: config.get<string>('TYPEORM_PASSWORD'),
+        password: config.get<string>('TYPEORM_PASSWORD') || "",
         database: config.get<string>('TYPEORM_DATABASE'),
         synchronize: true,
         entities: ['dist/**/*.entity.js'],

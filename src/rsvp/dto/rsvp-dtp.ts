@@ -1,7 +1,10 @@
-import { MaxLength, IsNotEmpty, IsEmail, IsString, IsNumber } from 'class-validator';
+import { MaxLength, IsNotEmpty, IsNumber, IsString, IsBoolean } from 'class-validator';
 
-export class CreateRsvpDto {
+export class RsvpDto {
     
+    @IsString()
+    readonly id: string;
+
     @IsString()
     @MaxLength(100)
     readonly name: string;
@@ -10,9 +13,8 @@ export class CreateRsvpDto {
     @MaxLength(13)
     readonly phone: string;
 
-    @IsString()
-    @IsNotEmpty()
-    readonly attend: string;
+    @IsBoolean()
+    readonly attend: boolean;
 
     @IsString()
     @MaxLength(1)

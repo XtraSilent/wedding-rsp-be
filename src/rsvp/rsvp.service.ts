@@ -1,26 +1,54 @@
-import { Injectable } from '@nestjs/common';
-import { CreateRsvpDto } from './dto/create-rsvp.dto';
+import {
+  Injectable,
+  NotFoundException,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { RsvpDto } from './dto/rsvp-dtp';
 import { UpdateRsvpDto } from './dto/update-rsvp.dto';
+import { Rsvps } from './entities/rsvps.entity';
+import { IRsvp } from './interfaces/rsvps.interface';
 
 @Injectable()
 export class RsvpService {
-  create(createRsvpDto: CreateRsvpDto) {
-    return 'This action adds a new rsvp';
+  constructor(
+    @InjectRepository(Rsvps)
+    private readonly rsvpRepository: Repository<Rsvps>,
+  ) {}
+
+  public async create(rsvpDto: RsvpDto){
+      try {
+        let data = await this.rsvpRepository.save(rsvpDto);
+      } catch (error) {
+          throw new HttpException(error, HttpStatus.BAD_REQUEST);
+      }
   }
 
-  findAll() {
-    return `This action returns all rsvp`;
+  public async findAll(): Promise<Rsvps[]>  {
+    return this.rsvpRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} rsvp`;
+  public async findOne(id: string) {
+    let data = await this.rsvpRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!data) {
+      throw new NotFoundException(`Rsvp ${data} not found`);
+    }
+
+    return data;
   }
 
-  update(id: number, updateRsvpDto: UpdateRsvpDto) {
+  public async update(id: string, updateRsvpDto: UpdateRsvpDto) {
     return `This action updates a #${id} rsvp`;
   }
 
-  remove(id: number) {
+  public async remove(id: string) {
     return `This action removes a #${id} rsvp`;
   }
 }
