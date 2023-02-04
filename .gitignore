@@ -3,7 +3,6 @@
 /node_modules
 
 # Enviroment
-.env
 .env.dev
 .env.stage
 .env.prod
