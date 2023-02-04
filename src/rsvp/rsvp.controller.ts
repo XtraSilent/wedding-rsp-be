@@ -1,12 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, HttpStatus, HttpCode, Query } from '@nestjs/common';
 import { RsvpService } from './rsvp.service';
 import { CreateRsvpDto } from './dto/create-rsvp.dto';
 import { UpdateRsvpDto } from './dto/update-rsvp.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import { RsvpDto } from './dto/rsvp-dtp';
+import { RsvpDto } from './dto/rsvp-dto';
 import { AttendanceRsvpDto } from './dto/get-attendance.dto';
 import { v4 as uuidv4 } from 'uuid';
+import { PageOptionsDto } from 'src/pagination/page-option.dto';
+import { PageDto } from 'src/pagination/page.dto';
 
 @ApiTags('Rsvp')
 // @UseGuards(AuthGuard('jwt'))
@@ -22,13 +24,17 @@ export class RsvpController {
   }
 
   @Get()
-  findAll() {
-    return this.rsvpService.findAll();
+  @HttpCode(HttpStatus.OK)
+  findAll(@Query() pageOptionsDto: PageOptionsDto
+  ): Promise<PageDto<RsvpDto>> {
+    return this.rsvpService.findAll(pageOptionsDto);
   }
 
   @Post('/getAttendance')
-  getAttend(@Body() attendanceRsvpDto: AttendanceRsvpDto) {
+  getAttend(@Body() attendanceRsvpDto: AttendanceRsvpDto): Promise<Number> {
+
     return this.rsvpService.getAttendance(attendanceRsvpDto);
+    
   }
 
   @Get(':id')

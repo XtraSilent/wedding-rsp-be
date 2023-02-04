@@ -30,5 +30,8 @@ async function bootstrap() {
   const port = configService.get<number>('NODE_API_PORT') || 3000;
   await app.listen(port);
   Logger.log(`Url for OpenApi: ${await app.getUrl()}/docs`, 'Swagger');
+
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
 }
+
 bootstrap();

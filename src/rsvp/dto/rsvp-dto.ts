@@ -11,8 +11,8 @@ export class RsvpDto {
     @IsString()
     phone: string;
 
-    @IsString()
-    attend: string;
+    @IsBoolean()
+    attend: boolean;
 
     @IsString()
     from: string;

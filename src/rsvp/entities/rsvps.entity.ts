@@ -9,8 +9,10 @@ export class Rsvps {
     @Column()
     name: string;
 
-    @Column()
-    attend: string;
+    @Column({
+        type: 'bool'
+    })
+    attend: boolean;
 
     @Column({
         unique: true,

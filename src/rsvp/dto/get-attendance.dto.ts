@@ -1,8 +1,8 @@
-import {IsNotEmpty, IsString } from 'class-validator';
+import {IsNotEmpty, IsBoolean } from 'class-validator';
 
 export class AttendanceRsvpDto {
     
-    @IsString()
+    @IsBoolean()
     @IsNotEmpty()
-    attend: string;
+    attend: boolean;
 }

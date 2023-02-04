@@ -6,11 +6,14 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { RsvpDto } from './dto/rsvp-dtp';
+import { RsvpDto } from './dto/rsvp-dto';
 import { AttendanceRsvpDto } from './dto/get-attendance.dto';
 import { UpdateRsvpDto } from './dto/update-rsvp.dto';
 import { Rsvps } from './entities/rsvps.entity';
 import { IRsvp } from './interfaces/rsvps.interface';
+import { PageOptionsDto } from '../pagination/page-option.dto';
+import { PageDto } from '../pagination/page.dto';
+import { PageMetaDto } from '../pagination/page-meta.dto';
 
 @Injectable()
 export class RsvpService {
@@ -27,8 +30,20 @@ export class RsvpService {
       }
   }
 
-  public async findAll(): Promise<Rsvps[]>  {
-    return this.rsvpRepository.find();
+  public async findAll(pageOptionsDto: PageOptionsDto): Promise<PageDto<RsvpDto>> {
+    const queryBuilder = this.rsvpRepository.createQueryBuilder("rsvp");
+
+    queryBuilder
+      .orderBy("created_at", pageOptionsDto.order)
+      .skip(pageOptionsDto.skip)
+      .take(pageOptionsDto.take);
+    
+    const itemCount = await queryBuilder.getCount();
+    const { entities } = await queryBuilder.getRawAndEntities();
+
+    const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto });
+    
+    return new PageDto(entities, pageMetaDto);
   }
 
   public async findOne(id: string) {
