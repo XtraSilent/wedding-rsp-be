@@ -69,10 +69,23 @@ export class RsvpService {
   }
 
   public async getAttendance(attendanceRsvpDto: AttendanceRsvpDto) {
-    return await this.rsvpRepository.count({
+
+    let attendData = await this.rsvpRepository.count({
       where: {
         attend: attendanceRsvpDto.attend
       }
     });
+
+    let totalData = attendanceRsvpDto.attend === true ? await this.rsvpRepository.createQueryBuilder("location")
+                .select("SUM(total)","total")
+                .where("attend = true")
+                .getRawOne() : 0; 
+    let res = 
+      {
+        attend : attendData,
+        total : parseInt(totalData?.total)
+      }
+  
+    return res 
   }
 }

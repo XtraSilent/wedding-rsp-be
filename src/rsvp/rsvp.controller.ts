@@ -31,7 +31,7 @@ export class RsvpController {
   }
 
   @Post('/getAttendance')
-  getAttend(@Body() attendanceRsvpDto: AttendanceRsvpDto): Promise<Number> {
+  getAttend(@Body() attendanceRsvpDto: AttendanceRsvpDto): Promise<Object> {
 
     return this.rsvpService.getAttendance(attendanceRsvpDto);
     
