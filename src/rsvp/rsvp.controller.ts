@@ -23,6 +23,7 @@ export class RsvpController {
     return this.rsvpService.create(rsvpDto);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get()
   @HttpCode(HttpStatus.OK)
   findAll(@Query() pageOptionsDto: PageOptionsDto
@@ -30,6 +31,7 @@ export class RsvpController {
     return this.rsvpService.findAll(pageOptionsDto);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post('/getAttendance')
   getAttend(@Body() attendanceRsvpDto: AttendanceRsvpDto): Promise<Object> {
 
@@ -37,16 +39,19 @@ export class RsvpController {
     
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.rsvpService.findOne(id);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateRsvpDto: UpdateRsvpDto) {
     return this.rsvpService.update(id, updateRsvpDto);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.rsvpService.remove(id);
